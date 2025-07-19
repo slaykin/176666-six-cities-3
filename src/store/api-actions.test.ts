@@ -10,10 +10,11 @@ import { ApiRoute, AuthorizationStatus, CITIES, SORT_TYPES } from '../constants'
 import { CurrentOffer, Offers, Reviews, UserData } from '../types/models';
 import { addFavoriteOffer, checkAuthAction, fetchOfferAction, getDataCurrentOffer, getFavoriteOffers, getReviews, getUserData, loginAction, logoutAction, sendUserReview } from './api-actions';
 import { redirectToRoute } from './action';
-import { dropUserData, setUserData } from './slices/user-slice/user-action';
+import { dropUserData, setUserData } from './slices/user/actions';
 import * as tokenStorage from '../services/token';
-import { setFavoriteOffers } from './slices/favorite-offers-slice/favorites-offers-action';
-import { addUserReview } from './slices/review-slice/review-action';
+import { setFavoriteOffers } from './slices/favorite-offers/actions';
+import { addUserReview } from './slices/review/actions';
+import { removeFavoriteOffers } from './slices/offers/actions';
 
 describe('Async actions', () => {
   const axios = createAPI();
@@ -42,7 +43,7 @@ describe('Async actions', () => {
         isCurrentOfferLoaded: false,
         hasCurrentOfferError: false,
       },
-      CURRENT_CARD: { currentCard: '' },
+      CURRENT_CARD: { currentCardId: '' },
       FAVORITE_OFFERS: { favoriteOffers: [] as Offers }
     });
   });
@@ -117,6 +118,7 @@ describe('Async actions', () => {
         loginAction.pending.type,
         setUserData.type,
         redirectToRoute.type,
+        fetchOfferAction.pending.type,
         loginAction.fulfilled.type,
       ]);
     });
@@ -144,6 +146,8 @@ describe('Async actions', () => {
       expect(actions).toEqual([
         logoutAction.pending.type,
         dropUserData.type,
+        setFavoriteOffers.type,
+        removeFavoriteOffers.type,
         logoutAction.fulfilled.type,
       ]);
     });
