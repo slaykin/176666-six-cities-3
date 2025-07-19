@@ -3,7 +3,7 @@ import { SORT_TYPES } from '../../constants';
 import { withStore } from '../../test/mock-component';
 import { SortingTypes } from './sort-types';
 import { extractActionsTypes } from '../../test/mock';
-import { setSorting } from '../../store/slices/sorting-slice/sorting-slice';
+import { setSorting } from '../../store/slices/sorting/sorting';
 import { TestIdMarkups } from '../../test/testid-markup';
 import '@testing-library/jest-dom';
 

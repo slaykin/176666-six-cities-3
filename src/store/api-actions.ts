@@ -2,12 +2,13 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { AuthData, CurrentOffer, CurrentOfferId, Offer, Offers, Review, Reviews, SendReview, UserData } from '../types/models';
-import { ApiRoute, AppRoute } from '../constants';
+import { ApiRoute, AppRoute, ErrorMessages } from '../constants';
 import { redirectToRoute } from './action';
 import { dropToken, saveToken } from '../services/token';
-import { addUserReview } from './slices/review-slice/review-action';
-import { dropUserData, setUserData } from './slices/user-slice/user-action';
-import { setFavoriteOffers } from './slices/favorite-offers-slice/favorites-offers-action';
+import { addUserReview } from './slices/review/actions';
+import { dropUserData, setUserData } from './slices/user/actions';
+import { setFavoriteOffers } from './slices/favorite-offers/actions';
+import { removeFavoriteOffers } from './slices/offers/actions';
 
 export const fetchOfferAction = createAsyncThunk<Offers, undefined, {
   dispatch: AppDispatch;
@@ -18,11 +19,9 @@ export const fetchOfferAction = createAsyncThunk<Offers, undefined, {
   'data/fetchOfferAction',
   async (_arg, {extra: api}) => {
     const {data} = await api.get<Offers>(ApiRoute.Offers);
-
     return data;
   },
 );
-
 export const getDataCurrentOffer = createAsyncThunk<CurrentOffer, CurrentOfferId, {
   dispatch: AppDispatch;
   state: State;
@@ -32,7 +31,7 @@ export const getDataCurrentOffer = createAsyncThunk<CurrentOffer, CurrentOfferId
   'data/getDataCurrentOffer',
   async (id, {extra: api, rejectWithValue}) => {
     if (!id) {
-      return rejectWithValue('ID не передан');
+      return rejectWithValue(ErrorMessages.NoID);
     }
 
     try {
@@ -40,11 +39,10 @@ export const getDataCurrentOffer = createAsyncThunk<CurrentOffer, CurrentOfferId
 
       return data;
     } catch (error : unknown) {
-      return rejectWithValue(error || 'Не удалось загрузить данные');
+      return rejectWithValue(error || ErrorMessages.FailLoadData);
     }
   },
 );
-
 export const getReviews = createAsyncThunk<Reviews, CurrentOfferId, {
   dispatch: AppDispatch;
   state: State;
@@ -54,7 +52,7 @@ export const getReviews = createAsyncThunk<Reviews, CurrentOfferId, {
   'data/getReviews',
   async (id, { extra: api, rejectWithValue }) => {
     if (!id) {
-      return rejectWithValue('ID не передан');
+      return rejectWithValue(ErrorMessages.NoID);
     }
 
     try {
@@ -62,11 +60,10 @@ export const getReviews = createAsyncThunk<Reviews, CurrentOfferId, {
 
       return data;
     } catch (error: unknown) {
-      return rejectWithValue(error || 'Не удалось загрузить данные');
+      return rejectWithValue(error || ErrorMessages.FailLoadData);
     }
   }
 );
-
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: State;
@@ -78,7 +75,6 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
     await api.get(ApiRoute.Login);
   },
 );
-
 export const getUserData = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: State;
@@ -91,7 +87,6 @@ export const getUserData = createAsyncThunk<void, undefined, {
     dispatch(setUserData(data.data as UserData));
   },
 );
-
 export const loginAction = createAsyncThunk<void, AuthData, {
   dispatch: AppDispatch;
   state: State;
@@ -104,6 +99,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     saveToken(data.token);
     dispatch(setUserData(data));
     dispatch(redirectToRoute(AppRoute.Main));
+    dispatch(fetchOfferAction());
   },
 );
 
@@ -120,11 +116,10 @@ export const addFavoriteOffer = createAsyncThunk<CurrentOffer, Offer, {
 
       return data;
     } catch (error : unknown) {
-      return rejectWithValue(error || 'Не удалось добавить/удалить избранное');
+      return rejectWithValue(error || ErrorMessages.FailAddFavorite);
     }
   },
 );
-
 export const getFavoriteOffers = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: State;
@@ -134,11 +129,9 @@ export const getFavoriteOffers = createAsyncThunk<void, undefined, {
   'favoriteOffers/get',
   async (_arg, {dispatch, extra: api}) => {
     const {data} = await api.get<Offers>(ApiRoute.Favorite);
-
     dispatch(setFavoriteOffers(data));
   },
 );
-
 export const sendUserReview = createAsyncThunk<void, SendReview, {
   dispatch: AppDispatch;
   state: State;
@@ -154,7 +147,6 @@ export const sendUserReview = createAsyncThunk<void, SendReview, {
     dispatch(addUserReview(data));
   }
 );
-
 export const logoutAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
   state: State;
@@ -166,6 +158,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     await api.delete(ApiRoute.Logout);
     dropToken();
     dispatch(dropUserData());
-
+    dispatch(setFavoriteOffers([]));
+    dispatch(removeFavoriteOffers());
   },
 );

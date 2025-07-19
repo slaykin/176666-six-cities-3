@@ -15,6 +15,7 @@ describe('Component: MainEmptyScreen', () => {
     OFFERS: {
       offers: [],
       isOffersLoaded: false,
+      hasError: false,
     },
   };
 

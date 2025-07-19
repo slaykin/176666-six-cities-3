@@ -1,8 +1,8 @@
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { SortTypes } from '../../types/models';
-import { getCurrentSort } from '../../store/slices/sorting-slice/sorting-reducer';
-import { setSorting } from '../../store/slices/sorting-slice/sorting-slice';
+import { getCurrentSort } from '../../store/slices/sorting/selectors';
+import { setSorting } from '../../store/slices/sorting/sorting';
 import { memo } from 'react';
 
 type SortingTypesProps = {

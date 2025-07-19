@@ -3,7 +3,7 @@ import { SORT_TYPES } from '../../constants';
 import { useAppSelector } from '../../hooks';
 import { SortingTypesMemo } from './sort-types';
 import { useState } from 'react';
-import { getCurrentSort } from '../../store/slices/sorting-slice/sorting-reducer';
+import { getCurrentSort } from '../../store/slices/sorting/selectors';
 
 export default function Sorting() {
   const currentSort = useAppSelector(getCurrentSort);

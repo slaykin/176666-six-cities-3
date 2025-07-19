@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { withHistory, withStore } from '../../test/mock-component';
 import { AuthorizationStatus } from '../../constants';
 import SignMarkup from './sign-markup';
-import { fakeStore } from '../../test/mock';
+import { extractActionsTypes, fakeStore } from '../../test/mock';
 import { TestIdMarkups } from '../../test/testid-markup';
-import '@testing-library/jest-dom';
+import { logoutAction } from '../../store/api-actions';
 import '@testing-library/jest-dom';
 
 describe('Component: SignMarkup', () => {
@@ -37,6 +37,22 @@ describe('Component: SignMarkup', () => {
 
     expect(signMarkupContainer).toBeInTheDocument();
     expect(unsignMarkupContainer).not.toBeInTheDocument();
+  });
+
+  it('should dispatch logoutAction when the user is authorized and clicked on Link', () => {
+    const { withStoreComponent, mockStore } = withStore(<SignMarkup />, store);
+
+    const withHistoryComponent = withHistory(withStoreComponent);
+
+    render(withHistoryComponent);
+    const link = screen.getByTestId(TestIdMarkups.SignMarkupTestId);
+    fireEvent.click(link);
+
+    const actions = extractActionsTypes(mockStore.getActions());
+
+    expect(actions).toEqual([
+      logoutAction.pending.type,
+    ]);
   });
 
 });
