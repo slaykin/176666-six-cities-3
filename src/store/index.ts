@@ -14,7 +14,7 @@ import { favoriteOffers } from './slices/favorite-offers/favorite-offers';
 
 const api = createAPI();
 
-export const createRootReducer = combineReducers({
+export const rootReducer = combineReducers({
   [NameSpace.Offers]: offers.reducer,
   [NameSpace.Town]: town.reducer,
   [NameSpace.Sorting]: sorting.reducer,
@@ -27,7 +27,7 @@ export const createRootReducer = combineReducers({
 });
 
 export const store = configureStore({
-  reducer: createRootReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       thunk: {
