@@ -4,6 +4,7 @@ import LoginScreen from './login-screen';
 import userEvent from '@testing-library/user-event';
 import { TestIdMarkups } from '../../test/testid-markup';
 import { AuthorizationStatus } from '../../constants';
+import '@testing-library/jest-dom';
 
 describe('Component: LoginScreen', () => {
 
