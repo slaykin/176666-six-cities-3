@@ -16,7 +16,7 @@ export default function FavoritesItem ({offer}: FavoritesItemProps) {
 
   const ratingValue = rating * RATING_MULTIPLIER;
 
-  const handleClick = () => {
+  const handleFavoriteClick = () => {
     dispatch(addFavoriteOffer(offer));
     dispatch(replaceOffer(offer.id));
     dispatch(setFavoriteOffer(offer));
@@ -50,7 +50,7 @@ export default function FavoritesItem ({offer}: FavoritesItemProps) {
                 <b className="place-card__price-value">&euro;{price}</b>
                 <span className="place-card__price-text">&#47;&nbsp;night</span>
               </div>
-              <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button" onClick={handleClick}>
+              <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button" onClick={handleFavoriteClick}>
                 <svg className="place-card__bookmark-icon" width="18" height="19">
                   <use xlinkHref="#icon-bookmark"></use>
                 </svg>

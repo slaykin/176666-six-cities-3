@@ -7,12 +7,12 @@ import { getCurrentAuth } from '../../store/slices/auth/selectors';
 export default function SignMarkup () {
   const dispatch = useAppDispatch();
   const loggedStatus = useAppSelector(getCurrentAuth);
-  const handleClick = () => {
+  const handleSignOutClick = () => {
     dispatch(logoutAction());
   };
 
   return loggedStatus === AuthorizationStatus.Auth ? (
-    <Link className="header__nav-link" to="/login" onClick={handleClick} data-testid='auth-markup-container'>
+    <Link className="header__nav-link" to="/login" onClick={handleSignOutClick} data-testid='auth-markup-container'>
       <span className="header__signout">{'Sign out'}</span>
     </Link>
   ) : (

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { IconProperties } from '../../types/models';
-import useMap from '../../hooks/useMap';
+import useMap from '../../hooks/use-map';
 import L from 'leaflet';
 import PinActive from'/img/pin-active.svg';
 import Pin from '/img/pin.svg';
@@ -55,7 +55,7 @@ export default function Map () {
   return (
     <div
       ref={mapRef}
-      style={{height: '600px', width: `${100}%`}}
+      style={{height: `${100}%`, width: `${100}%`}}
     >
     </div>
   );

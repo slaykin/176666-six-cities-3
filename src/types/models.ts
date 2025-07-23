@@ -54,17 +54,7 @@ export type CurrentOffer = {
 
 export type Offers = Offer[];
 
-export type TownsSlice = {
-  currentCity: City;
-}
-
-export type OffersSlice = {
-  offers: Offers;
-}
-
 export type SortTypes = 'Popular' | 'Price: low to high' | 'Price: high to low' | 'Top rated first';
-
-export type ErrorSlice = string | null;
 
 export type AuthSlice = {
   authStatus: AuthStatus;
@@ -106,8 +96,3 @@ export type SendReview = {
 }
 
 export type Reviews = Review[];
-
-export type SendingOfferInfo = {
-    offerId: string;
-    status: number;
-}

@@ -9,6 +9,7 @@ export default function MainEmptyScreen () {
   return (
     <div className="page page--gray page--main" data-testid='main-empty-container'>
       <Header />
+
       <main className="page__main page__main--index page__main--index-empty">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
